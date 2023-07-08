@@ -4,10 +4,10 @@ server:
 install:
 	npm ci
 
-build:
+production:
 	NODE_ENV=production npx webpack
 
-develop:
+development:
 	NODE_ENV=development npx webpack
 
 test:
