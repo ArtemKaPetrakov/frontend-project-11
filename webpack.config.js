@@ -49,7 +49,7 @@ module.exports = {
     }),
   ],
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  //mode в значение production - минифицирует код пере деплоем и создаст оптимизированный бандл, development делает полню развертку файл
+  //mode в значение production - минифицирует код перед деплоем и создаст оптимизированный бандл, development делает полню развертку файл
   devServer: {
     open: true,
     // открывает браузер после запуска
