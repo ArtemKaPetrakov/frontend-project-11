@@ -9,10 +9,20 @@
 import * as yup from 'yup';
 import onChange from 'on-change';
 import _ from 'lodash';
+import i18n from 'i18next';
+import resources from './locales/index.js';
 
 
 
-export default () => {
+
+export default async () => { // добавил async для i18n
+
+  const i18nInstance = i18n.createInstance();
+  await i18nInstance.init({
+    lng: 'ru',
+    debug: true,
+    resources,
+  });
 
   const elements = {
     form: document.querySelector('form'),
@@ -52,7 +62,7 @@ export default () => {
     return schema.validate(url);
   };
 
-  const renderFormError = (state, elements) => {
+  const renderFormError = (state, elements, i18nInstance) => {
 
     const { input, feedback } = elements;
 
@@ -62,11 +72,11 @@ export default () => {
 
     switch (state.error) {
       case 'url':
-      feedback.textContent = 'плозхой юрл';
+        feedback.textContent = i18nInstance.t('feedback.invalidUrlError');
       break;
   
       case 'notOneOf':
-        feedback.textContent = 'уже есть';
+        feedback.textContent = i18nInstance.t('feedback.NotOneOfError');
         break;
       
       default:
@@ -75,14 +85,15 @@ export default () => {
   };
 
 
-  const renderFormSuccess = (elements) => {
+  const renderFormSuccess = (elements, i18nInstance) => {
 
     const { form, input, feedback } = elements;
 
     input.classList.remove('is-invalid');
     feedback.classList.remove('text-danger');
     feedback.classList.add('text-success');
-    feedback.textContent = 'Ништяк';
+    // feedback.textContent = 'RSS успешно загружен';
+    feedback.textContent = i18nInstance.t('feedback.success');
     form.reset();
     input.focus();
   };
@@ -90,7 +101,7 @@ export default () => {
 
 
   // Обработчик общий 
-  const render = (state, elements) => (path, value) => {
+  const render = (state, elements, i18nInstance) => (path, value) => {
 
     const { input, feedback } = elements;
 
@@ -111,7 +122,7 @@ export default () => {
         // input.focus();
         // break;
 
-        return renderFormSuccess(elements);
+        return renderFormSuccess(elements, i18nInstance);
 
         case 'error':
         // input.classList.add('is-invalid');
@@ -132,7 +143,7 @@ export default () => {
         // }
         // break;
 
-        return renderFormError(state, elements);
+        return renderFormError(state, elements, i18nInstance);
 
         default:
           throw new Error(`Unknown state: ${state.error.type}`);
@@ -140,7 +151,7 @@ export default () => {
     }
   };
 
-  const state = onChange(initialState, render(initialState, elements));
+  const state = onChange(initialState, render(initialState, elements, i18nInstance));
 
 
   elements.form.addEventListener('submit', (event) => {
