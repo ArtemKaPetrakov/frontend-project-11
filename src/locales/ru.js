@@ -2,8 +2,12 @@ export default {
   translation: {
     feedback : {
       success: 'RSS успешно загружен',
-      invalidUrlError: 'Ссылка должна быть валидным URL',
-      NotOneOfError: 'RSS уже существует',
+      url: 'Ссылка должна быть валидным URL',
+      notOneOf: 'RSS уже существует',
+      invalidRss: 'Ресурс не содержит валидный RSS',
+      networkError: 'Ошибка Сети',
     },
+    posts: 'Посты',
+    feeds: 'Фиды',
   },
 };
